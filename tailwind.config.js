@@ -9,4 +9,9 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+<<<<<<< HEAD
 };
+=======
+}
+
+>>>>>>> 9f1bddc912953a3b48ca0f010c90008eea96cb76
