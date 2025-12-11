@@ -5,7 +5,7 @@
 import { Platform } from 'react-native';
 
 const tintColorLight = '#4CAF50'; // Green for walking/health theme
-const tintColorDark = '#81C784';
+const tintColorDark = '#F5A962'; // Orange/peach for dark theme
 
 export const Colors = {
   light: {
@@ -26,21 +26,21 @@ export const Colors = {
     muted: '#9E9E9E',
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
+    text: '#FFFFFF',
+    background: '#1C1E2D',
     tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
+    icon: '#8E8E93',
+    tabIconDefault: '#8E8E93',
     tabIconSelected: tintColorDark,
-    primary: '#81C784',
-    secondary: '#FFB74D',
-    accent: '#64B5F6',
-    success: '#81C784',
-    warning: '#FFD54F',
+    primary: '#F5A962',
+    secondary: '#5B7FFF',
+    accent: '#5B7FFF',
+    success: '#4CAF50',
+    warning: '#F5A962',
     error: '#E57373',
-    card: '#1E1E1E',
-    border: '#333333',
-    muted: '#757575',
+    card: '#252836',
+    border: '#3A3D4A',
+    muted: '#8E8E93',
   },
 };
 
