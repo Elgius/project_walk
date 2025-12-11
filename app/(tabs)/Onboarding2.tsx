@@ -7,7 +7,6 @@ const { width, height } = Dimensions.get("window");
 
 export default function Onboarding2({ navigation }: any) {
 
-  // Relative starting positions (percentages)
   const positions = [
     { x: 0.15, y: 0.12 },
     { x: 0.75, y: 0.18 },

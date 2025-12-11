@@ -3,19 +3,19 @@ import { Text, TouchableOpacity, StyleSheet, ViewStyle } from "react-native";
 import colors from "@/app/Theme/colors";
 
 interface PrimaryButtonProps {
-  label: string;
+  title: string;       // <-- consistent for all buttons
   onPress: () => void;
   style?: ViewStyle;
 }
 
-const PrimaryButton: React.FC<PrimaryButtonProps> = ({ label, onPress, style }) => {
+const PrimaryButton: React.FC<PrimaryButtonProps> = ({ title, onPress, style }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.7}
       style={[styles.button, style]}
     >
-      <Text style={styles.text}>{label}</Text>
+      <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 48,
     borderRadius: 14,
-    backgroundColor: colors.accent,
+    backgroundColor: colors.accent, // Kanagawa orange (#FFA066)
     justifyContent: "center",
     alignItems: "center",
   },
