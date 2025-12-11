@@ -1,7 +1,6 @@
 import React from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
-import { Home, Gift, PieChart, User, LucideIcon } from "lucide-react-native";
-
+import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
+import { Home, Search, Footprints, Gift, User, LucideIcon } from "lucide-react-native";
 import colors from "@/app/Theme/colors";
 
 interface BottomNavProps {
@@ -11,6 +10,7 @@ interface BottomNavProps {
 
 interface NavItemProps {
   icon: LucideIcon;
+  label: string;
   isActive: boolean;
   onPress: () => void;
 }
@@ -18,27 +18,39 @@ interface NavItemProps {
 const BottomNav: React.FC<BottomNavProps> = ({ activeTab, onTabChange }) => {
   return (
     <View style={styles.container}>
-
+      
       <NavItem
         icon={Home}
+        label="Home"
         isActive={activeTab === "home"}
         onPress={() => onTabChange("home")}
       />
 
       <NavItem
+        icon={Search}
+        label="Search"
+        isActive={activeTab === "search"}
+        onPress={() => onTabChange("search")}
+      />
+
+      <NavItem
+        icon={Footprints}
+        label=""
+        isActive={activeTab === "steps"}
+        onPress={() => onTabChange("steps")}
+        center
+      />
+
+      <NavItem
         icon={Gift}
+        label="Rewards"
         isActive={activeTab === "rewards"}
         onPress={() => onTabChange("rewards")}
       />
 
       <NavItem
-        icon={PieChart}
-        isActive={activeTab === "stats"}
-        onPress={() => onTabChange("stats")}
-      />
-
-      <NavItem
         icon={User}
+        label="Profile"
         isActive={activeTab === "profile"}
         onPress={() => onTabChange("profile")}
       />
@@ -49,19 +61,37 @@ const BottomNav: React.FC<BottomNavProps> = ({ activeTab, onTabChange }) => {
 
 export default BottomNav;
 
-/* ---------------- NavItem Component ---------------- */
+const NavItem: React.FC<NavItemProps & { center?: boolean }> = ({
+  icon: Icon,
+  label,
+  isActive,
+  onPress,
+  center,
+}) => {
 
-const NavItem: React.FC<NavItemProps> = ({ icon: Icon, isActive, onPress }) => {
   return (
-    <TouchableOpacity style={styles.item} onPress={onPress} activeOpacity={0.7}>
+    <TouchableOpacity
+      style={center ? styles.centerItemWrapper : styles.item}
+      onPress={onPress}
+      activeOpacity={0.7}
+    >
+      {/* Active square background */}
+      {isActive && (
+        <View style={styles.activeBg} />
+      )}
+
+      {/* Icon */}
       <Icon
         size={28}
         strokeWidth={2}
-        color={isActive ? colors.accentBlue : colors.textSecondary}
-        fill={isActive ? colors.accentBlue : "none"}
+        color={isActive ? "#000" : colors.accentBlue}
+        fill={isActive ? "#000" : "none"}
       />
 
-      {isActive && <View style={styles.dot} />}
+      {/* Label */}
+      {label !== "" && (
+        <Text style={styles.label}>{label}</Text>
+      )}
     </TouchableOpacity>
   );
 };
@@ -70,7 +100,7 @@ const NavItem: React.FC<NavItemProps> = ({ icon: Icon, isActive, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 70,
+    height: 85,
     backgroundColor: colors.bg,
     flexDirection: "row",
     justifyContent: "space-around",
@@ -84,13 +114,31 @@ const styles = StyleSheet.create({
   item: {
     alignItems: "center",
     justifyContent: "center",
+    gap: 4,
   },
 
-  dot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: colors.accentBlue,
+  centerItemWrapper: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
+  },
+
+  activeBg: {
+    position: "absolute",
+    width: 64,
+    height: 64,
+    backgroundColor: colors.accent,
+    borderRadius: 18,
+    shadowColor: colors.accentBlue,
+    shadowOpacity: 0.5,
+    shadowRadius: 18,
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 10,
+  },
+
+  label: {
+    fontSize: 13,
+    color: colors.accentBlue,
     marginTop: 4,
   },
 });
