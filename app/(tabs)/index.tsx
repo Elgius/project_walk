@@ -1,136 +1,130 @@
-import { StyleSheet, View, Pressable } from "react-native";
+import { StyleSheet, View, ScrollView, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
+import { CircularProgress } from "@/components/circular-progress";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 
 export default function HomeScreen() {
-  const colorScheme = useColorScheme() ?? "light";
+  const colorScheme = useColorScheme() ?? "dark";
   const colors = Colors[colorScheme];
 
-  // Mock data - replace with real data later
-  const steps = 6842;
+  // Static data matching the design
+  const greeting = "Good Morning,";
+  const userName = "Aminath Axwa Moosa!";
+  const points = 100;
+  const steps = 10000;
   const goal = 10000;
-  const points = 1250;
-  const distance = 4.2; // km
-  const calories = 312;
-
-  const progress = Math.min((steps / goal) * 100, 100);
+  const percentage = Math.round((steps / goal) * 100);
+  const distance = "10.1 KM";
+  const time = "70 Mins";
 
   return (
-    <SafeAreaView
-      style={[styles.container, { backgroundColor: colors.background }]}
-    >
-      <ThemedView style={styles.header}>
-        <ThemedText type="title">WalkPoints</ThemedText>
-        <View
-          style={[styles.pointsBadge, { backgroundColor: colors.secondary }]}
-        >
-          <ThemedText style={styles.pointsText}>{points} pts</ThemedText>
-        </View>
-      </ThemedView>
-
-      <ThemedView style={styles.content}>
-        {/* Main Step Counter */}
-        <View
-          style={[
-            styles.stepCard,
-            { backgroundColor: colors.card, borderColor: colors.border },
-          ]}
-        >
-          <ThemedText style={[styles.stepsLabel, { color: colors.muted }]}>
-            Today's Steps
-          </ThemedText>
-          <ThemedText style={[styles.stepsCount, { color: colors.primary }]}>
-            {steps.toLocaleString()}
-          </ThemedText>
-          <ThemedText style={[styles.goalText, { color: colors.muted }]}>
-            Goal: {goal.toLocaleString()}
-          </ThemedText>
-
-          {/* Progress Bar */}
-          <View
-            style={[styles.progressBar, { backgroundColor: colors.border }]}
-          >
-            <View
-              style={[
-                styles.progressFill,
-                { width: `${progress}%`, backgroundColor: colors.primary },
-              ]}
-            />
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        {/* Header */}
+        <View style={styles.header}>
+          <View style={styles.headerLeft}>
+            <View style={[styles.avatar, { borderColor: colors.muted }]}>
+              <MaterialIcons name="person-outline" size={32} color={colors.muted} />
+            </View>
+            <View style={styles.greetingContainer}>
+              <ThemedText style={[styles.greetingText, { color: colors.text }]}>
+                {greeting}
+              </ThemedText>
+              <ThemedText style={[styles.userName, { color: colors.text }]}>
+                {userName}
+              </ThemedText>
+            </View>
           </View>
-          <ThemedText style={[styles.progressText, { color: colors.muted }]}>
-            {progress.toFixed(0)}% of daily goal
-          </ThemedText>
+          <View style={[styles.pointsBadge, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <MaterialIcons name="directions-run" size={20} color="#D4A04A" />
+            <ThemedText style={[styles.pointsText, { color: colors.text }]}>
+              {points}
+            </ThemedText>
+          </View>
+        </View>
+
+        {/* Daily Summary Title */}
+        <ThemedText style={[styles.sectionTitle, { color: colors.text }]}>
+          Daily Summary
+        </ThemedText>
+
+        {/* Progress Ring Card */}
+        <View style={[styles.progressCard, { backgroundColor: colors.card }]}>
+          <CircularProgress
+            size={220}
+            strokeWidth={13}
+            progress={percentage}
+            progressColor={colors.primary}
+            backgroundColor={colors.border}
+          >
+            <ThemedText style={[styles.stepsCount, { color: colors.text }]}>
+              {steps.toLocaleString()}
+            </ThemedText>
+            <ThemedText style={[styles.goalText, { color: colors.muted }]}>
+              {goal.toLocaleString()} Goal
+            </ThemedText>
+            <View style={[styles.percentageBadge, { backgroundColor: 'rgba(245, 169, 98, 0.2)' }]}>
+              <ThemedText style={[styles.percentageText, { color: colors.primary }]}>
+                {percentage}%
+              </ThemedText>
+            </View>
+          </CircularProgress>
         </View>
 
         {/* Stats Row */}
         <View style={styles.statsRow}>
-          <View
-            style={[
-              styles.statCard,
-              { backgroundColor: colors.card, borderColor: colors.border },
-            ]}
-          >
-            <ThemedText style={[styles.statValue, { color: colors.accent }]}>
+          {/* Distance Card */}
+          <View style={[styles.statCard, { backgroundColor: colors.card }]}>
+            <View style={[styles.statIconContainer, { backgroundColor: 'rgba(245, 169, 98, 0.15)' }]}>
+              <MaterialIcons name="location-on" size={24} color={colors.primary} />
+            </View>
+            <ThemedText style={[styles.statValue, { color: colors.text }]}>
               {distance}
             </ThemedText>
             <ThemedText style={[styles.statLabel, { color: colors.muted }]}>
-              km
+              Distance
             </ThemedText>
           </View>
-          <View
-            style={[
-              styles.statCard,
-              { backgroundColor: colors.card, borderColor: colors.border },
-            ]}
-          >
-            <ThemedText style={[styles.statValue, { color: colors.warning }]}>
-              {calories}
+
+          {/* Time Card */}
+          <View style={[styles.statCard, { backgroundColor: colors.card }]}>
+            <View style={[styles.statIconContainer, { backgroundColor: 'rgba(91, 127, 255, 0.15)' }]}>
+              <MaterialIcons name="access-time" size={24} color={colors.secondary} />
+            </View>
+            <ThemedText style={[styles.statValue, { color: colors.text }]}>
+              {time}
             </ThemedText>
             <ThemedText style={[styles.statLabel, { color: colors.muted }]}>
-              kcal
-            </ThemedText>
-          </View>
-          <View
-            style={[
-              styles.statCard,
-              { backgroundColor: colors.card, borderColor: colors.border },
-            ]}
-          >
-            <ThemedText style={[styles.statValue, { color: colors.secondary }]}>
-              +{Math.floor(steps / 100)}
-            </ThemedText>
-            <ThemedText style={[styles.statLabel, { color: colors.muted }]}>
-              pts today
+              Time
             </ThemedText>
           </View>
         </View>
 
-        {/* Start Walk Button */}
-        <Pressable
-          style={[styles.startButton, { backgroundColor: colors.primary }]}
-          onPress={() => console.log("Start walk")}
-        >
-          <ThemedText style={styles.startButtonText}>Start Walking</ThemedText>
+        {/* Rewards Banner */}
+        <Pressable style={styles.rewardsBanner}>
+          <View style={styles.rewardsContent}>
+            <View style={styles.rewardsTextContainer}>
+              <View style={styles.rewardsTitleRow}>
+                <ThemedText style={styles.rewardsTitle}>Rewards</ThemedText>
+                <MaterialIcons name="arrow-forward" size={20} color="#1C1E2D" style={styles.rewardsArrow} />
+              </View>
+              <ThemedText style={styles.rewardsSubtitle}>
+                Where rewards come to life
+              </ThemedText>
+            </View>
+            <View style={styles.rewardsImageContainer}>
+              {/* Placeholder for marketplace illustration */}
+              <View style={styles.illustrationPlaceholder}>
+                <MaterialIcons name="storefront" size={60} color="rgba(28, 30, 45, 0.3)" />
+              </View>
+            </View>
+          </View>
         </Pressable>
-
-        {/* Quick Info */}
-        <View
-          style={[
-            styles.infoCard,
-            { backgroundColor: colors.card, borderColor: colors.border },
-          ]}
-        >
-          <ThemedText type="subtitle">How it works</ThemedText>
-          <ThemedText style={{ color: colors.muted, marginTop: 8 }}>
-            Walk to earn points! Every 100 steps = 1 point. Redeem your points
-            for rewards in the Rewards tab.
-          </ThemedText>
-        </View>
-      </ThemedView>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -139,95 +133,153 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  scrollView: {
+    flex: 1,
+    paddingHorizontal: 20,
+  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 20,
     paddingVertical: 16,
   },
+  headerLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    borderWidth: 2,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  greetingContainer: {
+    marginLeft: 12,
+  },
+  greetingText: {
+    fontSize: 14,
+    opacity: 0.8,
+  },
+  userName: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
   pointsBadge: {
-    paddingHorizontal: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 20,
+    borderWidth: 1,
+    gap: 6,
   },
   pointsText: {
-    color: "#fff",
-    fontWeight: "bold",
     fontSize: 16,
+    fontWeight: "600",
   },
-  content: {
-    flex: 1,
-    paddingHorizontal: 20,
-  },
-  stepCard: {
-    padding: 24,
-    borderRadius: 16,
-    alignItems: "center",
-    borderWidth: 1,
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginTop: 8,
     marginBottom: 16,
   },
-  stepsLabel: {
-    fontSize: 14,
-    marginBottom: 8,
+  progressCard: {
+    borderRadius: 20,
+    padding: 30,
+    alignItems: "center",
+    marginBottom: 16,
   },
   stepsCount: {
-    fontSize: 56,
+    fontSize: 36,
     fontWeight: "bold",
   },
   goalText: {
     fontSize: 14,
     marginTop: 4,
   },
-  progressBar: {
-    width: "100%",
-    height: 8,
-    borderRadius: 4,
-    marginTop: 16,
-    overflow: "hidden",
+  percentageBadge: {
+    paddingHorizontal: 15,
+    paddingVertical: 3,
+    borderRadius: 30,
+    marginTop: 10,
   },
-  progressFill: {
-    height: "100%",
-    borderRadius: 4,
-  },
-  progressText: {
-    fontSize: 12,
-    marginTop: 8,
+  percentageText: {
+    fontSize: 14,
+    fontWeight: "600",
   },
   statsRow: {
     flexDirection: "row",
-    gap: 12,
+    gap: 16,
     marginBottom: 16,
   },
   statCard: {
     flex: 1,
+    borderRadius: 16,
     padding: 16,
+  },
+  statIconContainer: {
+    width: 44,
+    height: 44,
     borderRadius: 12,
+    justifyContent: "center",
     alignItems: "center",
-    borderWidth: 1,
+    marginBottom: 12,
   },
   statValue: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "bold",
   },
   statLabel: {
-    fontSize: 12,
+    fontSize: 14,
+    marginTop: 2,
+  },
+  rewardsBanner: {
+    backgroundColor: "#F5A962",
+    borderRadius: 20,
+    overflow: "hidden",
+    marginBottom: 20,
+  },
+  rewardsContent: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 20,
+  },
+  rewardsTextContainer: {
+    flex: 1,
+  },
+  rewardsTitleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  rewardsTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#1C1E2D",
+  },
+  rewardsArrow: {
+    marginLeft: 8,
+  },
+  rewardsSubtitle: {
+    fontSize: 13,
+    color: "#1C1E2D",
+    opacity: 0.7,
     marginTop: 4,
   },
-  startButton: {
-    paddingVertical: 16,
-    borderRadius: 12,
+  rewardsImageContainer: {
+    width: 100,
+    height: 80,
+    justifyContent: "center",
     alignItems: "center",
-    marginBottom: 16,
   },
-  startButtonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  infoCard: {
-    padding: 16,
+  illustrationPlaceholder: {
+    width: 80,
+    height: 80,
     borderRadius: 12,
-    borderWidth: 1,
+    backgroundColor: "rgba(255, 255, 255, 0.3)",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
