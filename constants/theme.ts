@@ -1,12 +1,11 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * Theme colors for the walking app
  */
 
 import { Platform } from 'react-native';
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+const tintColorLight = '#4CAF50'; // Green for walking/health theme
+const tintColorDark = '#81C784';
 
 export const Colors = {
   light: {
@@ -16,6 +15,15 @@ export const Colors = {
     icon: '#687076',
     tabIconDefault: '#687076',
     tabIconSelected: tintColorLight,
+    primary: '#4CAF50',
+    secondary: '#FF9800',
+    accent: '#2196F3',
+    success: '#4CAF50',
+    warning: '#FFC107',
+    error: '#F44336',
+    card: '#F5F5F5',
+    border: '#E0E0E0',
+    muted: '#9E9E9E',
   },
   dark: {
     text: '#ECEDEE',
@@ -24,6 +32,15 @@ export const Colors = {
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
+    primary: '#81C784',
+    secondary: '#FFB74D',
+    accent: '#64B5F6',
+    success: '#81C784',
+    warning: '#FFD54F',
+    error: '#E57373',
+    card: '#1E1E1E',
+    border: '#333333',
+    muted: '#757575',
   },
 };
 

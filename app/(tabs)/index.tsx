@@ -1,98 +1,183 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet, View, Pressable } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { Colors } from '@/constants/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const colorScheme = useColorScheme() ?? 'light';
+  const colors = Colors[colorScheme];
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
+  // Mock data - replace with real data later
+  const steps = 6842;
+  const goal = 10000;
+  const points = 1250;
+  const distance = 4.2; // km
+  const calories = 312;
+
+  const progress = Math.min((steps / goal) * 100, 100);
+
+  return (
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      <ThemedView style={styles.header}>
+        <ThemedText type="title">WalkPoints</ThemedText>
+        <View style={[styles.pointsBadge, { backgroundColor: colors.secondary }]}>
+          <ThemedText style={styles.pointsText}>{points} pts</ThemedText>
+        </View>
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
+
+      <ThemedView style={styles.content}>
+        {/* Main Step Counter */}
+        <View style={[styles.stepCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+          <ThemedText style={[styles.stepsLabel, { color: colors.muted }]}>Today's Steps</ThemedText>
+          <ThemedText style={[styles.stepsCount, { color: colors.primary }]}>{steps.toLocaleString()}</ThemedText>
+          <ThemedText style={[styles.goalText, { color: colors.muted }]}>Goal: {goal.toLocaleString()}</ThemedText>
+
+          {/* Progress Bar */}
+          <View style={[styles.progressBar, { backgroundColor: colors.border }]}>
+            <View
+              style={[
+                styles.progressFill,
+                { width: `${progress}%`, backgroundColor: colors.primary }
+              ]}
+            />
+          </View>
+          <ThemedText style={[styles.progressText, { color: colors.muted }]}>
+            {progress.toFixed(0)}% of daily goal
+          </ThemedText>
+        </View>
+
+        {/* Stats Row */}
+        <View style={styles.statsRow}>
+          <View style={[styles.statCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <ThemedText style={[styles.statValue, { color: colors.accent }]}>{distance}</ThemedText>
+            <ThemedText style={[styles.statLabel, { color: colors.muted }]}>km</ThemedText>
+          </View>
+          <View style={[styles.statCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <ThemedText style={[styles.statValue, { color: colors.warning }]}>{calories}</ThemedText>
+            <ThemedText style={[styles.statLabel, { color: colors.muted }]}>kcal</ThemedText>
+          </View>
+          <View style={[styles.statCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <ThemedText style={[styles.statValue, { color: colors.secondary }]}>+{Math.floor(steps / 100)}</ThemedText>
+            <ThemedText style={[styles.statLabel, { color: colors.muted }]}>pts today</ThemedText>
+          </View>
+        </View>
+
+        {/* Start Walk Button */}
+        <Pressable
+          style={[styles.startButton, { backgroundColor: colors.primary }]}
+          onPress={() => console.log('Start walk')}
+        >
+          <ThemedText style={styles.startButtonText}>Start Walking</ThemedText>
+        </Pressable>
+
+        {/* Quick Info */}
+        <View style={[styles.infoCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+          <ThemedText type="subtitle">How it works</ThemedText>
+          <ThemedText style={{ color: colors.muted, marginTop: 8 }}>
+            Walk to earn points! Every 100 steps = 1 point. Redeem your points for rewards in the Rewards tab.
+          </ThemedText>
+        </View>
       </ThemedView>
-    </ParallaxScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
   },
-  stepContainer: {
-    gap: 8,
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+  },
+  pointsBadge: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  pointsText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 20,
+  },
+  stepCard: {
+    padding: 24,
+    borderRadius: 16,
+    alignItems: 'center',
+    borderWidth: 1,
+    marginBottom: 16,
+  },
+  stepsLabel: {
+    fontSize: 14,
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  stepsCount: {
+    fontSize: 56,
+    fontWeight: 'bold',
+  },
+  goalText: {
+    fontSize: 14,
+    marginTop: 4,
+  },
+  progressBar: {
+    width: '100%',
+    height: 8,
+    borderRadius: 4,
+    marginTop: 16,
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    borderRadius: 4,
+  },
+  progressText: {
+    fontSize: 12,
+    marginTop: 8,
+  },
+  statsRow: {
+    flexDirection: 'row',
+    gap: 12,
+    marginBottom: 16,
+  },
+  statCard: {
+    flex: 1,
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    borderWidth: 1,
+  },
+  statValue: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  statLabel: {
+    fontSize: 12,
+    marginTop: 4,
+  },
+  startButton: {
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  startButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  infoCard: {
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
   },
 });
