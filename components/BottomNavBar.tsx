@@ -1,134 +1,100 @@
-import React, { useEffect } from "react";
-import { View, Text, StyleSheet, Animated, Dimensions } from "react-native";
-import PrimaryButton from "@/components/PrimaryButton";
+import React from "react";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  Home,
+  HomeIcon,
+  Wallet,
+  WalletIcon,
+  PieChart,
+  PieChartIcon,
+  User,
+  UserIcon
+} from "lucide-react-native";
+
 import colors from "@/app/Theme/colors";
 
-const { width, height } = Dimensions.get("window");
+interface BottomNavProps {
+  activeTab: string;
+  onTabChange: (tab: string) => void;
+}
 
-export default function Onboarding2({ navigation }: any) {
-
-  // Relative starting positions (percentages)
-  const positions = [
-    { x: 0.15, y: 0.12 },
-    { x: 0.75, y: 0.18 },
-    { x: 0.30, y: 0.32 },
-    { x: 0.65, y: 0.40 },
-    { x: 0.20, y: 0.50 },
-    { x: 0.80, y: 0.55 },
-  ];
-
-  // Create animated dots
-  const dots = positions.map((pos) => ({
-    x: new Animated.Value(width * pos.x),
-    y: new Animated.Value(height * pos.y * 0.6), // stays above text area
-  }));
-
-  // Floating animation
-  useEffect(() => {
-    dots.forEach((dot) => {
-      const animate = () => {
-        Animated.parallel([
-          Animated.timing(dot.x, {
-            toValue: width * (0.1 + Math.random() * 0.8),
-            duration: 5000,
-            useNativeDriver: false,
-          }),
-          Animated.timing(dot.y, {
-            toValue: height * (0.1 + Math.random() * 0.4),
-            duration: 5000,
-            useNativeDriver: false,
-          }),
-        ]).start(animate);
-      };
-      animate();
-    });
-  }, []);
-
+export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   return (
     <View style={styles.container}>
+      <NavItem
+        active={activeTab === "home"}
+        onPress={() => onTabChange("home")}
+        IconOutline={Home}
+        IconFilled={HomeIcon}
+      />
 
-      {/* Floating Dots */}
-      {dots.map((dot, index) => (
-        <Animated.Image
-          key={index}
-          source={require("../assets/dot.png")}
-          style={[styles.dotImage, { top: dot.y, left: dot.x }]}
-        />
-      ))}
+      <NavItem
+        active={activeTab === "wallet"}
+        onPress={() => onTabChange("wallet")}
+        IconOutline={Wallet}
+        IconFilled={WalletIcon}
+      />
 
-      {/* Text */}
-      <View style={styles.textBox}>
-        <Text style={styles.title}>Earn Points</Text>
-        <Text style={styles.subtitle}>Unlock points as you reach milestones.</Text>
-      </View>
+      <NavItem
+        active={activeTab === "stats"}
+        onPress={() => onTabChange("stats")}
+        IconOutline={PieChart}
+        IconFilled={PieChartIcon}
+      />
 
-      {/* Pagination */}
-      <View style={styles.dotsRow}>
-        <View style={styles.dot} />
-        <View style={[styles.dot, styles.activeDot]} />
-        <View style={styles.dot} />
-      </View>
-
-      {/* Button */}
-      <PrimaryButton
-        title="Continue"
-        onPress={() => navigation.navigate("Onboarding3")}
+      <NavItem
+        active={activeTab === "profile"}
+        onPress={() => onTabChange("profile")}
+        IconOutline={User}
+        IconFilled={UserIcon}
       />
     </View>
   );
 }
 
+function NavItem({
+  active,
+  onPress,
+  IconOutline,
+  IconFilled,
+}: {
+  active: boolean;
+  onPress: () => void;
+  IconOutline: any;
+  IconFilled: any;
+}) {
+  const Icon = active ? IconFilled : IconOutline;
+
+  return (
+    <TouchableOpacity style={styles.item} onPress={onPress} activeOpacity={0.7}>
+      <Icon size={32} strokeWidth={2} color={colors.accentBlue} />
+
+      {active && <View style={styles.dot} />}
+    </TouchableOpacity>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: colors.bg,
-    alignItems: "center",
-    justifyContent: "flex-end",
-    paddingBottom: 80,
-  },
-
-  dotImage: {
-    position: "absolute",
-    width: 38,
-    height: 38,
-    opacity: 0.22,
-  },
-
-  textBox: {
-    alignItems: "center",
-    marginBottom: 140,
-  },
-
-  title: {
-    fontSize: 28,
-    fontWeight: "700",
-    color: colors.textPrimary,
-    marginBottom: 8,
-  },
-
-  subtitle: {
-    fontSize: 16,
-    color: colors.textSecondary,
-    textAlign: "center",
-    width: 260,
-  },
-
-  dotsRow: {
+    height: 78,
+    backgroundColor: colors.card,
     flexDirection: "row",
-    gap: 8,
-    marginBottom: 20,
+    justifyContent: "space-around",
+    alignItems: "center",
+    borderTopWidth: 1,
+    borderTopColor: "rgba(255,255,255,0.04)",
+  },
+
+  item: {
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: colors.textDisabled,
-    opacity: 0.4,
-  },
-
-  activeDot: {
-    backgroundColor: colors.accent,
-    opacity: 1,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: colors.accentBlue,
+    marginTop: 6,
   },
 });
