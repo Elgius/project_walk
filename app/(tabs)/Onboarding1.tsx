@@ -8,12 +8,12 @@ import {
   StyleSheet,
   Text,
   View,
+  SafeAreaView,
 } from "react-native";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
-const footsteps=require("../../assets/images/Footsteps.png");
-
+const footsteps = require("../../assets/images/footsteps.png");
 
 type Props = {
   navigation: NavigationProp<any>;
@@ -21,8 +21,8 @@ type Props = {
 
 export default function Onboarding1({ navigation }: Props) {
   return (
-    <View style={styles.container}>
-      
+    <SafeAreaView style={styles.container}>
+
       {/* Background Footsteps */}
       <Image
         source={footsteps}
@@ -45,13 +45,14 @@ export default function Onboarding1({ navigation }: Props) {
         <View style={styles.dot} />
       </View>
 
-      {/* Continue Button */}
+      {/* Button */}
       <PrimaryButton
         title="Continue"
         onPress={() => navigation.navigate("Onboarding2")}
+        style={{ width: "85%", marginBottom: 20 }}
       />
 
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -59,42 +60,43 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.bg,
-    alignItems: "center",
     justifyContent: "flex-end",
-    paddingBottom: 60,
+    alignItems: "center",
   },
 
   footsteps: {
     position: "absolute",
-    top: 120,
-    width: width * 1.2,
-    opacity: 0.15,
+    top: height * 0.12,       // Moves footsteps a bit higher (like mockup)
+    width: width * 1.4,       // Slight stretch for better coverage
+    opacity: 0.18,
   },
 
   textBox: {
     position: "absolute",
-    top: 350,
+    top: height * 0.42,       // Perfect placement for most devices
     alignItems: "center",
+    paddingHorizontal: 30,
   },
 
   title: {
     fontSize: 28,
+    fontWeight: "700",
     color: colors.textPrimary,
-    fontFamily: "Inter-Bold",
     marginBottom: 10,
   },
 
   subtitle: {
     fontSize: 16,
-    fontFamily: "Merriweather-Regular",
     color: colors.textSecondary,
     textAlign: "center",
     width: 260,
+    lineHeight: 24,
   },
 
   dotsRow: {
     flexDirection: "row",
-    marginBottom: 25,
+    marginBottom: 18,
+    gap: 10,
   },
 
   dot: {
@@ -102,10 +104,11 @@ const styles = StyleSheet.create({
     height: 10,
     borderRadius: 5,
     backgroundColor: colors.textDisabled,
-    marginHorizontal: 6,
+    opacity: 0.5,
   },
 
   activeDot: {
     backgroundColor: colors.accent,
+    opacity: 1,
   },
 });

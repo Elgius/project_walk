@@ -3,9 +3,8 @@ import PrimaryButton from "@/components/PrimaryButton";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
-// const footsteps=require("../assets/images/footsteps.png");
-const locationimg=require("../../assets/images/location.png");
-const footsteps2="@/../assets/images/footsteps.png";
+const locationimg = require("../assets/images/location.png");
+const footsteps = require("../assets/images/footsteps.png");
 
 export default function PermissionsScreen({ navigation }: any) {
   return (
@@ -27,7 +26,7 @@ export default function PermissionsScreen({ navigation }: any) {
 
       {/* Footsteps Bottom Decoration */}
       <Image
-        source={footsteps2}
+        source={footsteps}
         style={styles.footsteps}
         resizeMode="contain"
       />
