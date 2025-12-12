@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView, Pressable } from "react-native";
+import { StyleSheet, View, ScrollView, Pressable, ImageBackground } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
@@ -22,6 +22,13 @@ export default function HomeScreen() {
   const percentage = Math.round((steps / goal) * 100);
   const distance = "10.1 KM";
   const time = "70 Mins";
+
+  // Random weather background image for progress card
+  const weatherImages = [
+    require('@/assets/images/weather/rain.jpg'),
+    require('@/assets/images/weather/sunny.jpg'),
+  ];
+  const randomImage = weatherImages[Math.floor(Math.random() * weatherImages.length)];
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
@@ -55,27 +62,34 @@ export default function HomeScreen() {
         </ThemedText>
 
         {/* Progress Ring Card */}
-        <View style={[styles.progressCard, { backgroundColor: colors.card }]}>
-          <CircularProgress
-            size={220}
-            strokeWidth={13}
-            progress={percentage}
-            progressColor={colors.primary}
-            backgroundColor={colors.border}
-          >
-            <ThemedText style={[styles.stepsCount, { color: colors.text }]}>
-              {steps.toLocaleString()}
-            </ThemedText>
-            <ThemedText style={[styles.goalText, { color: colors.muted }]}>
-              {goal.toLocaleString()} Goal
-            </ThemedText>
-            <View style={[styles.percentageBadge, { backgroundColor: 'rgba(245, 169, 98, 0.2)' }]}>
-              <ThemedText style={[styles.percentageText, { color: colors.primary }]}>
-                {percentage}%
+        <ImageBackground
+          source={randomImage}
+          style={[styles.progressCard, { backgroundColor: colors.card }]}
+          imageStyle={styles.progressCardImage}
+          resizeMode="cover"
+        >
+          <View style={styles.progressCardOverlay}>
+            <CircularProgress
+              size={220}
+              strokeWidth={13}
+              progress={percentage}
+              progressColor={colors.primary}
+              backgroundColor={colors.border}
+            >
+              <ThemedText style={[styles.stepsCount, { color: colors.text }]}>
+                {steps.toLocaleString()}
               </ThemedText>
-            </View>
-          </CircularProgress>
-        </View>
+              <ThemedText style={[styles.goalText, { color: colors.muted }]}>
+                {goal.toLocaleString()} Goal
+              </ThemedText>
+              <View style={[styles.percentageBadge, { backgroundColor: 'rgba(245, 169, 98, 0.2)' }]}>
+                <ThemedText style={[styles.percentageText, { color: colors.primary }]}>
+                  {percentage}%
+                </ThemedText>
+              </View>
+            </CircularProgress>
+          </View>
+        </ImageBackground>
 
         {/* Stats Row */}
         <View style={styles.statsRow}>
@@ -190,9 +204,21 @@ const styles = StyleSheet.create({
   },
   progressCard: {
     borderRadius: 20,
-    padding: 30,
     alignItems: "center",
     marginBottom: 16,
+    overflow: 'hidden',
+  },
+  progressCardImage: {
+    borderRadius: 20,
+  },
+  progressCardOverlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 30,
+    zIndex: 1,
+    width: '100%',
+    borderRadius: 20,
   },
   stepsCount: {
     fontSize: 36,
