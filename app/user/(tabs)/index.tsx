@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView, Pressable, ImageBackground } from "react-native";
+import { StyleSheet, View, ScrollView, Pressable, ImageBackground, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
@@ -133,10 +133,11 @@ export default function HomeScreen() {
               </ThemedText>
             </View>
             <View style={styles.rewardsImageContainer}>
-              {/* Placeholder for marketplace illustration */}
-              <View style={styles.illustrationPlaceholder}>
-                <MaterialIcons name="storefront" size={60} color="rgba(28, 30, 45, 0.3)" />
-              </View>
+              <Image
+                source={require('@/assets/images/market.png')}
+                style={styles.marketplaceImage}
+                resizeMode="contain"
+              />
             </View>
           </View>
         </Pressable>
@@ -305,12 +306,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  illustrationPlaceholder: {
-    width: 80,
-    height: 80,
-    borderRadius: 12,
-    backgroundColor: "rgba(255, 255, 255, 0.3)",
-    justifyContent: "center",
-    alignItems: "center",
+  marketplaceImage: {
+    width: 500,
+    height: 200,
+    transform: [{ translateY: 20 }],
+    opacity: 0.7
   },
 });
