@@ -5,7 +5,7 @@ import colors from "@/app/Theme/colors";
 
 const { width, height } = Dimensions.get("window");
 
-const dotimg=require("../assets/images/dot.png");
+const dotimg=require("../../assets/images/dot.png");
 
 export default function Onboarding2({ navigation }: any) {
 

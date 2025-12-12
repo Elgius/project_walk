@@ -12,7 +12,7 @@ import {
 
 const { width } = Dimensions.get("window");
 
-const footsteps=require("../assets/images/footsteps.png");
+const footsteps=require("../../assets/images/Footsteps.png");
 
 
 type Props = {

@@ -4,7 +4,7 @@ import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
 // const footsteps=require("../assets/images/footsteps.png");
-const locationimg=require("../assets/images/location.png");
+const locationimg=require("../../assets/images/location.png");
 const footsteps2="@/../assets/images/footsteps.png";
 
 export default function PermissionsScreen({ navigation }: any) {
