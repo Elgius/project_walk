@@ -8,7 +8,9 @@ import {
   PieChart,
   PieChartIcon,
   User,
-  UserIcon
+  UserIcon,
+  BarChartBig,
+  BarChartBigIcon
 } from "lucide-react-native";
 
 import colors from "@/app/Theme/colors";
@@ -36,8 +38,15 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
       />
 
       <NavItem
-        active={activeTab === "stats"}
-        onPress={() => onTabChange("stats")}
+        active={activeTab === "milestones"}
+        onPress={() => onTabChange("milestones")}
+        IconOutline={BarChartBig}
+        IconFilled={BarChartBigIcon}
+      />
+
+      <NavItem
+        active={activeTab === "analytics"}
+        onPress={() => onTabChange("analytics")}
         IconOutline={PieChart}
         IconFilled={PieChartIcon}
       />

@@ -3,8 +3,8 @@ import PrimaryButton from "@/components/PrimaryButton";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
-const locationimg = require("../assets/images/location.png");
-const footsteps = require("../assets/images/footsteps.png");
+const locationimg = require("@/assets/images/location.png");
+const footsteps = require("@/assets/images/Footsteps.png");
 
 export default function PermissionsScreen({ navigation }: any) {
   return (
