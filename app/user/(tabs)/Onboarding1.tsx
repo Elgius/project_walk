@@ -13,7 +13,7 @@ import {
 
 const { width, height } = Dimensions.get("window");
 
-const footsteps = require("../../assets/images/Footsteps.png");
+const footsteps = require("@/assets/images/Footsteps.png");
 
 type Props = {
   navigation: NavigationProp<any>;

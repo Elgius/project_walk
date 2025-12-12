@@ -9,21 +9,21 @@ export default function TabLayout() {
 
   // Map pathname to tab name
   const getActiveTab = () => {
-    if (pathname === '/' || pathname === '/index') return 'home';
-    if (pathname === '/milestones') return 'milestones';
-    if (pathname === '/analytics') return 'analytics';
-    if (pathname === '/rewards') return 'rewards';
-    if (pathname === '/profile') return 'profile';
+    if (pathname === '/user' || pathname === '/user/index') return 'home';
+    if (pathname === '/user/milestones') return 'milestones';
+    if (pathname === '/user/analytics') return 'analytics';
+    if (pathname === '/user/rewards') return 'rewards';
+    if (pathname === '/user/profile') return 'profile';
     return 'home';
   };
 
   const handleTabChange = (tab: string) => {
     const routes: Record<string, string> = {
-      home: '/',
-      milestones: '/milestones',
-      analytics: '/analytics',
-      rewards: '/rewards',
-      profile: '/profile',
+      home: '/user',
+      milestones: '/user/milestones',
+      analytics: '/user/analytics',
+      rewards: '/user/rewards',
+      profile: '/user/profile',
     };
     router.push(routes[tab] as any);
   };
