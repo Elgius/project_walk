@@ -7,6 +7,7 @@ import { ThemedText } from "@/components/themed-text";
 import { CircularProgress } from "@/components/circular-progress";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import colors from "@/app/Theme/colors";
 
 export default function HomeScreen() {
   const colorScheme = useColorScheme() ?? "dark";
@@ -120,13 +121,35 @@ export default function HomeScreen() {
           </View>
         </View>
 
+        {/* Leaderboard Banner */}
+        <Pressable style={styles.leaderboardsBanner} onPress={() => router.push("/user/(tabs)/Onboarding1")}>
+          <View style={styles.rewardsContent}>
+            <View style={styles.rewardsTextContainer}>
+              <View style={styles.rewardsTitleRow}>
+                <ThemedText style={styles.rewardsTitle}>Leaderboards</ThemedText>
+                <MaterialIcons name="arrow-forward" size={20} color="#fff" style={styles.rewardsArrow} />
+              </View>
+              <ThemedText style={styles.rewardsSubtitle}>
+                Where rewards come to life
+              </ThemedText>
+            </View>
+            <View style={styles.rewardsImageContainer}>
+              <Image
+                source={require('@/assets/images/leaderboard.png')}
+                style={styles.leaderboardImage}
+                resizeMode="contain"
+              />
+            </View>
+          </View>
+        </Pressable>
+
         {/* Rewards Banner */}
-        <Pressable style={styles.rewardsBanner} onPress={() => router.push("/rewards")}>
+        <Pressable style={styles.rewardsBanner} onPress={() => router.push("/user/(tabs)/rewards")}>
           <View style={styles.rewardsContent}>
             <View style={styles.rewardsTextContainer}>
               <View style={styles.rewardsTitleRow}>
                 <ThemedText style={styles.rewardsTitle}>Rewards</ThemedText>
-                <MaterialIcons name="arrow-forward" size={20} color="#1C1E2D" style={styles.rewardsArrow} />
+                <MaterialIcons name="arrow-forward" size={20} color={"#fff"} style={styles.rewardsArrow} />
               </View>
               <ThemedText style={styles.rewardsSubtitle}>
                 Where rewards come to life
@@ -267,11 +290,31 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 2,
   },
+  leaderboardsBanner: {
+    backgroundColor: colors.accentBlue,
+    borderRadius: 20,
+    overflow: "hidden",
+    marginBottom: 20,
+    // iOS shadow
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    // Android shadow
+    elevation: 8,
+  },
   rewardsBanner: {
     backgroundColor: "#F5A962",
     borderRadius: 20,
     overflow: "hidden",
     marginBottom: 20,
+    // iOS shadow
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    // Android shadow
+    elevation: 8,
   },
   rewardsContent: {
     flexDirection: "row",
@@ -281,6 +324,7 @@ const styles = StyleSheet.create({
   },
   rewardsTextContainer: {
     flex: 1,
+    color: colors.textDisabled,
   },
   rewardsTitleRow: {
     flexDirection: "row",
@@ -289,14 +333,14 @@ const styles = StyleSheet.create({
   rewardsTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#1C1E2D",
+    color: "#fff",
   },
   rewardsArrow: {
     marginLeft: 8,
   },
   rewardsSubtitle: {
     fontSize: 13,
-    color: "#1C1E2D",
+    color: "#fff",
     opacity: 0.7,
     marginTop: 4,
   },
@@ -310,6 +354,12 @@ const styles = StyleSheet.create({
     width: 500,
     height: 200,
     transform: [{ translateY: 20 }],
+    opacity: 0.7
+  },
+  leaderboardImage: {
+    width: 220,
+    height: 200,
+    transform: [{ translateY: 20 }, { translateX: -20 }],
     opacity: 0.7
   },
 });
