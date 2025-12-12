@@ -17,7 +17,7 @@ type WalkHistory = {
 };
 
 export default function ActivityScreen() {
-  const colorScheme = useColorScheme() ?? 'light';
+  const colorScheme = useColorScheme() ?? 'dark';
   const colors = Colors[colorScheme];
   const [isWalking, setIsWalking] = useState(false);
 

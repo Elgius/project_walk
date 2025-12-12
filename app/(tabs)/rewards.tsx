@@ -22,7 +22,7 @@ type RedeemedReward = {
 };
 
 export default function RewardsScreen() {
-  const colorScheme = useColorScheme() ?? 'light';
+  const colorScheme = useColorScheme() ?? 'dark';
   const colors = Colors[colorScheme];
   const [activeTab, setActiveTab] = useState<'available' | 'redeemed'>('available');
 
