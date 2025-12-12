@@ -15,8 +15,8 @@ export default function HomeScreen() {
   const router = useRouter();
 
   // Static data matching the design
-  const greeting = "Good Morning,";
-  const userName = "Aminath Axwa Moosa!";
+  const greeting = "Hello,";
+  const userName = "Axwa!";
   const points = 100;
   const steps = 10000;
   const goal = 10000;
@@ -37,15 +37,20 @@ export default function HomeScreen() {
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.headerLeft}>
-            <View style={[styles.avatar, { borderColor: colors.muted }]}>
+            {/* <View style={[styles.avatar, { borderColor: colors.muted }]}>
               <MaterialIcons name="person-outline" size={32} color={colors.muted} />
-            </View>
+            </View> */}
             <View style={styles.greetingContainer}>
-              <ThemedText style={[styles.greetingText, { color: colors.text }]}>
-                {greeting}
-              </ThemedText>
-              <ThemedText style={[styles.userName, { color: colors.text }]}>
-                {userName}
+              <View style={styles.nameContainer}>
+                <ThemedText style={[styles.greetingText, { color: colors.text }]}>
+                  {greeting}
+                </ThemedText>
+                <ThemedText style={[styles.userName, { color: colors.text }]}>
+                  {userName}
+                </ThemedText>
+              </View>
+              <ThemedText style={[styles.welcomeBackText, { color: colors.text }]}>
+                Good job. You're on track!
               </ThemedText>
             </View>
           </View>
@@ -176,6 +181,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     paddingHorizontal: 20,
+    paddingBottom: 120,
   },
   header: {
     flexDirection: "row",
@@ -197,15 +203,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   greetingContainer: {
-    marginLeft: 12,
+    // marginLeft removed since avatar is no longer shown
+  },
+  nameContainer: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 8,
+    alignItems: "flex-end"
   },
   greetingText: {
-    fontSize: 14,
+    fontSize: 22,
     opacity: 0.8,
   },
   userName: {
-    fontSize: 16,
+    fontSize: 22,
     fontWeight: "600",
+  },
+  welcomeBackText: {
+    fontSize: 14,
+    opacity: 0.8,
+    marginTop: 6
   },
   pointsBadge: {
     flexDirection: "row",
