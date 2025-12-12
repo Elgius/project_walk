@@ -10,6 +10,9 @@ export default function BusinessLayout() {
       }}
     >
       <Stack.Screen name="index" />
+      <Stack.Screen name="profile" />
+      <Stack.Screen name="rewards" />
+      <Stack.Screen name="analytics" />
     </Stack>
   );
 }

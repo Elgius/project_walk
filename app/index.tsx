@@ -35,7 +35,7 @@ export default function LandingScreen() {
               styles.businessButton,
               pressed && styles.buttonPressed,
             ]}
-            onPress={() => router.push('/business')}
+            onPress={() => router.push('/business/profile')}
           >
             <Text style={styles.buttonText}>I'm a Business</Text>
             <Text style={styles.buttonDescription}>
