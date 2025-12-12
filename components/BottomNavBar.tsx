@@ -1,5 +1,6 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   Home,
   HomeIcon,
@@ -21,8 +22,10 @@ interface BottomNavProps {
 }
 
 export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
+  const insets = useSafeAreaInsets();
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingBottom: insets.bottom }]}>
       <NavItem
         active={activeTab === "home"}
         onPress={() => onTabChange("home")}
@@ -85,7 +88,7 @@ function NavItem({
 
 const styles = StyleSheet.create({
   container: {
-    height: 78,
+    height: 95,
     backgroundColor: colors.card,
     flexDirection: "row",
     justifyContent: "space-around",
