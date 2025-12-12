@@ -26,7 +26,8 @@ export const Colors = {
     muted: '#9E9E9E',
   },
   dark: {
-    text: '#FFFFFF',
+    text: '#DCD7BA',
+    textSecondary: '#C8C093',
     background: '#1C1E2D',
     tint: tintColorDark,
     icon: '#8E8E93',
@@ -40,7 +41,7 @@ export const Colors = {
     error: '#E57373',
     card: '#252836',
     border: '#3A3D4A',
-    muted: '#8E8E93',
+    muted: '#727169',
   },
 };
 

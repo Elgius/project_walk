@@ -193,15 +193,16 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   balanceCard: {
-    padding: 20,
+    padding: 16,
     borderRadius: 16,
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 24,
   },
   balanceLabel: {
     color: '#fff',
     opacity: 0.9,
     fontSize: 14,
+    paddingVertical: 8,
   },
   balanceValue: {
     color: '#fff',

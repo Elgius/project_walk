@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import colors from '@/app/Theme/colors';
+import { Colors } from '@/constants/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 
 // Types
 type Period = 'today' | 'week' | 'month' | 'all';
@@ -84,6 +86,9 @@ const mockNextMilestone = {
 };
 
 export default function AnalyticsScreen() {
+  const colorScheme = useColorScheme() ?? 'dark';
+  const themeColors = Colors[colorScheme];
+  
   const [selectedPeriod, setSelectedPeriod] = useState<Period>('week');
   const periodData = mockStepsByPeriod[selectedPeriod];
 
@@ -98,12 +103,9 @@ export default function AnalyticsScreen() {
   const maxSteps = Math.max(...Object.values(mockWeeklyPattern));
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: themeColors.background }]}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.title}>Analytics</Text>
-        </View>
+        <Text style={styles.title}>Analytics</Text>
 
         {/* Period Tabs */}
         <View style={styles.periodTabs}>
@@ -311,13 +313,13 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
   },
-  header: {
-    paddingVertical: 16,
-  },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
     color: colors.textPrimary,
+    marginTop: 40,
+    marginBottom: 24,
+    marginLeft: 10,
   },
   periodTabs: {
     flexDirection: 'row',
@@ -346,14 +348,15 @@ const styles = StyleSheet.create({
   statsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
+    justifyContent: 'space-between',
     marginBottom: 16,
   },
   statCard: {
-    width: '47%',
+    width: '48%',
     backgroundColor: colors.card,
     borderRadius: 16,
     padding: 16,
+    marginBottom: 12,
   },
   statIconContainer: {
     width: 44,
