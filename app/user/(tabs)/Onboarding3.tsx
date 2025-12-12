@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import PrimaryButton from "@/components/PrimaryButton";
 import colors from "@/app/Theme/colors";
 
-const rewardimg=require("../../assets/images/reward.png");
+const rewardimg=require("@/assets/images/reward.png");
 
 export default function Onboarding3({ navigation }: any) {
   return (

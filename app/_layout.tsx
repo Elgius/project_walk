@@ -20,10 +20,6 @@ const AppTheme = {
   },
 };
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
-
 export default function RootLayout() {
   return (
     <ThemeProvider value={AppTheme}>
@@ -32,7 +28,9 @@ export default function RootLayout() {
           contentStyle: { backgroundColor: Colors.dark.background },
         }}
       >
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="user" options={{ headerShown: false }} />
+        <Stack.Screen name="business" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>
       <StatusBar style="light" />
