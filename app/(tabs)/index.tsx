@@ -1,6 +1,7 @@
 import { StyleSheet, View, ScrollView, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useRouter } from "expo-router";
 
 import { ThemedText } from "@/components/themed-text";
 import { CircularProgress } from "@/components/circular-progress";
@@ -10,6 +11,7 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 export default function HomeScreen() {
   const colorScheme = useColorScheme() ?? "dark";
   const colors = Colors[colorScheme];
+  const router = useRouter();
 
   // Static data matching the design
   const greeting = "Good Morning,";
@@ -105,7 +107,7 @@ export default function HomeScreen() {
         </View>
 
         {/* Rewards Banner */}
-        <Pressable style={styles.rewardsBanner}>
+        <Pressable style={styles.rewardsBanner} onPress={() => router.push("/rewards")}>
           <View style={styles.rewardsContent}>
             <View style={styles.rewardsTextContainer}>
               <View style={styles.rewardsTitleRow}>
@@ -141,7 +143,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 16,
+    marginTop: 40,
+    marginBottom: 24,
   },
   headerLeft: {
     flexDirection: "row",

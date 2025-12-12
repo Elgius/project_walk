@@ -3,7 +3,6 @@ import { StyleSheet, View, ScrollView, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
@@ -12,7 +11,6 @@ type Reward = {
   title: string;
   description: string;
   points: number;
-  category: string;
   icon: string;
 };
 
@@ -32,14 +30,14 @@ export default function RewardsScreen() {
 
   // Mock rewards data
   const availableRewards: Reward[] = [
-    { id: '1', title: '$5 Coffee Voucher', description: 'Valid at partner cafes', points: 500, category: 'Food & Drink', icon: '☕' },
-    { id: '2', title: '10% Store Discount', description: 'Any item at SportMart', points: 300, category: 'Shopping', icon: '🛍️' },
-    { id: '3', title: 'Free Smoothie', description: 'At Juice Bar locations', points: 400, category: 'Food & Drink', icon: '🥤' },
-    { id: '4', title: '$10 Gift Card', description: 'Amazon digital gift card', points: 1000, category: 'Shopping', icon: '🎁' },
-    { id: '5', title: 'Movie Ticket', description: 'Any standard showing', points: 800, category: 'Entertainment', icon: '🎬' },
-    { id: '6', title: 'Plant a Tree', description: 'We plant a tree in your name', points: 200, category: 'Charity', icon: '🌳' },
-    { id: '7', title: 'Premium Week', description: '7 days of premium features', points: 600, category: 'App', icon: '⭐' },
-    { id: '8', title: '$25 Running Shoes', description: 'Discount at ShoeWorld', points: 2000, category: 'Shopping', icon: '👟' },
+    { id: '1', title: '$5 Coffee Voucher', description: 'Valid at partner cafes', points: 500, icon: '☕' },
+    { id: '2', title: '10% Store Discount', description: 'Any item at SportMart', points: 300, icon: '🛍️' },
+    { id: '3', title: 'Free Smoothie', description: 'At Juice Bar locations', points: 400, icon: '🥤' },
+    { id: '4', title: '$10 Gift Card', description: 'Amazon digital gift card', points: 1000, icon: '🎁' },
+    { id: '5', title: 'Movie Ticket', description: 'Any standard showing', points: 800, icon: '🎬' },
+    { id: '6', title: 'Plant a Tree', description: 'We plant a tree in your name', points: 200, icon: '🌳' },
+    { id: '7', title: 'Premium Week', description: '7 days of premium features', points: 600, icon: '⭐' },
+    { id: '8', title: '$25 Running Shoes', description: 'Discount at ShoeWorld', points: 2000, icon: '👟' },
   ];
 
   const redeemedRewards: RedeemedReward[] = [
@@ -60,57 +58,55 @@ export default function RewardsScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-      <ThemedView style={styles.header}>
-        <ThemedText type="title">Rewards</ThemedText>
-      </ThemedView>
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        <ThemedText style={[styles.title, { color: colors.text }]}>Rewards</ThemedText>
 
-      {/* Points Balance */}
-      <View style={[styles.balanceCard, { backgroundColor: colors.secondary }]}>
-        <ThemedText style={styles.balanceLabel}>Your Balance</ThemedText>
-        <ThemedText style={styles.balanceValue}>{userPoints.toLocaleString()}</ThemedText>
-        <ThemedText style={styles.balanceLabel}>points</ThemedText>
-      </View>
+        {/* Points Balance */}
+        <View style={[styles.balanceCard, { backgroundColor: colors.secondary }]}>
+          <ThemedText style={styles.balanceLabel}>Your Balance</ThemedText>
+          <ThemedText style={styles.balanceValue}>{userPoints.toLocaleString()}</ThemedText>
+          <ThemedText style={styles.balanceLabel}>points</ThemedText>
+        </View>
 
-      {/* Tabs */}
-      <View style={styles.tabs}>
-        <Pressable
-          style={[
-            styles.tab,
-            activeTab === 'available' && { borderBottomColor: colors.primary, borderBottomWidth: 2 },
-          ]}
-          onPress={() => setActiveTab('available')}
-        >
-          <ThemedText
-            style={[styles.tabText, { color: activeTab === 'available' ? colors.primary : colors.muted }]}
+        {/* Tabs */}
+        <View style={styles.tabs}>
+          <Pressable
+            style={[
+              styles.tab,
+              activeTab === 'available' && { borderBottomColor: colors.primary, borderBottomWidth: 2 },
+            ]}
+            onPress={() => setActiveTab('available')}
           >
-            Available
-          </ThemedText>
-        </Pressable>
-        <Pressable
-          style={[
-            styles.tab,
-            activeTab === 'redeemed' && { borderBottomColor: colors.primary, borderBottomWidth: 2 },
-          ]}
-          onPress={() => setActiveTab('redeemed')}
-        >
-          <ThemedText
-            style={[styles.tabText, { color: activeTab === 'redeemed' ? colors.primary : colors.muted }]}
+            <ThemedText
+              style={[styles.tabText, { color: activeTab === 'available' ? colors.primary : colors.muted }]}
+            >
+              Available
+            </ThemedText>
+          </Pressable>
+          <Pressable
+            style={[
+              styles.tab,
+              activeTab === 'redeemed' && { borderBottomColor: colors.primary, borderBottomWidth: 2 },
+            ]}
+            onPress={() => setActiveTab('redeemed')}
           >
-            Redeemed
-          </ThemedText>
-        </Pressable>
-      </View>
+            <ThemedText
+              style={[styles.tabText, { color: activeTab === 'redeemed' ? colors.primary : colors.muted }]}
+            >
+              Redeemed
+            </ThemedText>
+          </Pressable>
+        </View>
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        {/* Content */}
         {activeTab === 'available' ? (
           <>
             {availableRewards.map((reward) => {
               const canAfford = userPoints >= reward.points;
               return (
-                <Pressable
+                <View
                   key={reward.id}
                   style={[styles.rewardCard, { backgroundColor: colors.card, borderColor: colors.border }]}
-                  onPress={() => handleRedeem(reward)}
                 >
                   <View style={styles.rewardIcon}>
                     <ThemedText style={styles.rewardIconText}>{reward.icon}</ThemedText>
@@ -120,19 +116,31 @@ export default function RewardsScreen() {
                     <ThemedText style={[styles.rewardDesc, { color: colors.muted }]}>
                       {reward.description}
                     </ThemedText>
-                    <ThemedText style={[styles.rewardCategory, { color: colors.accent }]}>
-                      {reward.category}
-                    </ThemedText>
+                    <View style={styles.rewardPointsRow}>
+                      <ThemedText
+                        style={[styles.rewardPointsValue, { color: canAfford ? colors.primary : colors.error }]}
+                      >
+                        {reward.points}
+                      </ThemedText>
+                      <ThemedText style={[styles.rewardPointsLabel, { color: colors.muted }]}> pts</ThemedText>
+                    </View>
                   </View>
-                  <View style={styles.rewardPoints}>
-                    <ThemedText
-                      style={[styles.rewardPointsValue, { color: canAfford ? colors.primary : colors.error }]}
-                    >
-                      {reward.points}
+                  <Pressable
+                    style={[
+                      styles.redeemButton,
+                      {
+                        backgroundColor: canAfford ? colors.primary : colors.border,
+                        opacity: canAfford ? 1 : 0.5,
+                      },
+                    ]}
+                    onPress={() => handleRedeem(reward)}
+                    disabled={!canAfford}
+                  >
+                    <ThemedText style={[styles.redeemButtonText, { color: canAfford ? '#fff' : colors.muted }]}>
+                      Redeem
                     </ThemedText>
-                    <ThemedText style={[styles.rewardPointsLabel, { color: colors.muted }]}>pts</ThemedText>
-                  </View>
-                </Pressable>
+                  </Pressable>
+                </View>
               );
             })}
           </>
@@ -173,15 +181,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
+  scrollView: {
+    flex: 1,
     paddingHorizontal: 20,
-    paddingVertical: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginTop: 40,
+    marginBottom: 24,
+    marginLeft: 10,
   },
   balanceCard: {
-    marginHorizontal: 20,
     padding: 20,
     borderRadius: 16,
     alignItems: 'center',
+    marginBottom: 20,
   },
   balanceLabel: {
     color: '#fff',
@@ -195,8 +210,7 @@ const styles = StyleSheet.create({
   },
   tabs: {
     flexDirection: 'row',
-    paddingHorizontal: 20,
-    marginTop: 20,
+    marginBottom: 20,
   },
   tab: {
     flex: 1,
@@ -206,11 +220,6 @@ const styles = StyleSheet.create({
   tabText: {
     fontSize: 16,
     fontWeight: '600',
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 20,
-    marginTop: 16,
   },
   rewardCard: {
     flexDirection: 'row',
@@ -242,19 +251,28 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 2,
   },
-  rewardCategory: {
-    fontSize: 11,
+  rewardPointsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 4,
   },
-  rewardPoints: {
-    alignItems: 'center',
-  },
   rewardPointsValue: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
   },
   rewardPointsLabel: {
-    fontSize: 11,
+    fontSize: 12,
+  },
+  redeemButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  redeemButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
   },
   redeemedCard: {
     padding: 16,

@@ -3,8 +3,8 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import {
   Home,
   HomeIcon,
-  Wallet,
-  WalletIcon,
+  Gift,
+  GiftIcon,
   PieChart,
   PieChartIcon,
   User,
@@ -31,10 +31,10 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
       />
 
       <NavItem
-        active={activeTab === "wallet"}
-        onPress={() => onTabChange("wallet")}
-        IconOutline={Wallet}
-        IconFilled={WalletIcon}
+        active={activeTab === "rewards"}
+        onPress={() => onTabChange("rewards")}
+        IconOutline={Gift}
+        IconFilled={GiftIcon}
       />
 
       <NavItem

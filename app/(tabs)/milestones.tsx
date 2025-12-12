@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, ScrollView, TextInput, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
@@ -15,10 +15,11 @@ type Milestone = {
   currentSteps: number;
   points: number;
   status: MilestoneStatus;
+  dateAchieved?: Date;
 };
 
 const milestones: Milestone[] = [
-  { id: '1', targetSteps: 20000, currentSteps: 20000, points: 100, status: 'completed' },
+  { id: '1', targetSteps: 20000, currentSteps: 20000, points: 100, status: 'completed', dateAchieved: new Date('2025-12-10') },
   { id: '2', targetSteps: 10000, currentSteps: 6000, points: 50, status: 'in_progress' },
   { id: '3', targetSteps: 5000, currentSteps: 0, points: 25, status: 'locked' },
 ];
@@ -26,6 +27,22 @@ const milestones: Milestone[] = [
 export default function MilestonesScreen() {
   const colorScheme = useColorScheme() ?? 'dark';
   const colors = Colors[colorScheme];
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeTab, setActiveTab] = useState<'ongoing' | 'completed'>('ongoing');
+
+  // Filter by search query
+  const filteredMilestones = milestones.filter((milestone) => {
+    if (!searchQuery.trim()) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      milestone.targetSteps.toString().includes(query) ||
+      milestone.points.toString().includes(query)
+    );
+  });
+
+  // Split by tab
+  const ongoingMilestones = filteredMilestones.filter(m => m.status !== 'completed');
+  const completedMilestones = filteredMilestones.filter(m => m.status === 'completed');
 
   const getIconForStatus = (status: MilestoneStatus) => {
     switch (status) {
@@ -57,7 +74,49 @@ export default function MilestonesScreen() {
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <ThemedText style={[styles.title, { color: colors.text }]}>Milestones</ThemedText>
 
-        {milestones.map((milestone) => {
+        {/* Search Input */}
+        <View style={[styles.searchContainer, { backgroundColor: colors.card }]}>
+          <MaterialIcons name="search" size={20} color={colors.muted} />
+          <TextInput
+            style={[styles.searchInput, { color: colors.text }]}
+            placeholder="Search milestones..."
+            placeholderTextColor={colors.muted}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+        </View>
+
+        {/* Tabs */}
+        <View style={styles.tabs}>
+          <Pressable
+            style={[
+              styles.tab,
+              activeTab === 'ongoing' && { borderBottomColor: colors.primary, borderBottomWidth: 2 },
+            ]}
+            onPress={() => setActiveTab('ongoing')}
+          >
+            <ThemedText
+              style={[styles.tabText, { color: activeTab === 'ongoing' ? colors.primary : colors.muted }]}
+            >
+              Ongoing
+            </ThemedText>
+          </Pressable>
+          <Pressable
+            style={[
+              styles.tab,
+              activeTab === 'completed' && { borderBottomColor: colors.primary, borderBottomWidth: 2 },
+            ]}
+            onPress={() => setActiveTab('completed')}
+          >
+            <ThemedText
+              style={[styles.tabText, { color: activeTab === 'completed' ? colors.primary : colors.muted }]}
+            >
+              Completed
+            </ThemedText>
+          </Pressable>
+        </View>
+
+        {(activeTab === 'ongoing' ? ongoingMilestones : completedMilestones).map((milestone) => {
           const icon = getIconForStatus(milestone.status);
           const opacity = getCardOpacity(milestone.status);
           const progress = milestone.targetSteps > 0
@@ -106,6 +165,13 @@ export default function MilestonesScreen() {
                   >
                     ({milestone.points} points)
                   </ThemedText>
+                  {milestone.status === 'completed' && milestone.dateAchieved && (
+                    <ThemedText style={[styles.dateText, { color: colors.muted }]}>
+                      Achieved {milestone.dateAchieved.toLocaleDateString('en-US', {
+                        month: 'short', day: 'numeric', year: 'numeric'
+                      })}
+                    </ThemedText>
+                  )}
                 </View>
 
                 <View
@@ -156,7 +222,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     // textAlign: 'center',
-    marginTop: 20,
+    marginTop: 40,
     marginBottom: 24,
     marginLeft: 10,
   },
@@ -198,5 +264,35 @@ const styles = StyleSheet.create({
   progressBar: {
     height: '100%',
     borderRadius: 3,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    marginBottom: 20,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    paddingVertical: 12,
+    marginLeft: 8,
+  },
+  tabs: {
+    flexDirection: 'row',
+    marginBottom: 20,
+  },
+  tab: {
+    flex: 1,
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  tabText: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  dateText: {
+    fontSize: 12,
+    marginTop: 4,
   },
 });
