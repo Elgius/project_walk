@@ -1,16 +1,19 @@
+import colors from "@/app/Theme/colors";
+import PrimaryButton from "@/components/PrimaryButton";
+import { NavigationProp } from "@react-navigation/native";
 import React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
   Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
-import { NavigationProp } from "@react-navigation/native";
-import PrimaryButton from "@/components/PrimaryButton";
-import colors from "@/app/Theme/colors";
 
 const { width } = Dimensions.get("window");
+
+const footsteps=require("../assets/images/footsteps.png");
+
 
 type Props = {
   navigation: NavigationProp<any>;
@@ -22,7 +25,7 @@ export default function Onboarding1({ navigation }: Props) {
       
       {/* Background Footsteps */}
       <Image
-        source={require("../assets/footsteps.png")}
+        source={footsteps}
         style={styles.footsteps}
         resizeMode="contain"
       />

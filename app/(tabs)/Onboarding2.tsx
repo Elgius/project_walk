@@ -5,6 +5,8 @@ import colors from "@/app/Theme/colors";
 
 const { width, height } = Dimensions.get("window");
 
+const dotimg=require("../assets/images/dot.png");
+
 export default function Onboarding2({ navigation }: any) {
 
   const positions = [
@@ -50,7 +52,7 @@ export default function Onboarding2({ navigation }: any) {
       {dots.map((dot, index) => (
         <Animated.Image
           key={index}
-          source={require("../assets/dot.png")}
+          source={dotimg}
           style={[styles.dotImage, { top: dot.y, left: dot.x }]}
         />
       ))}

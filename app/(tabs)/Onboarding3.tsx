@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import PrimaryButton from "@/components/PrimaryButton";
 import colors from "@/app/Theme/colors";
 
+const rewardimg=require("../assets/images/reward.png");
+
 export default function Onboarding3({ navigation }: any) {
   return (
     <View style={styles.container}>
@@ -10,7 +12,7 @@ export default function Onboarding3({ navigation }: any) {
       {/* Illustration */}
       <View style={styles.imageContainer}>
         <Image
-          source={require("../assets/reward.png")} 
+          source={rewardimg} 
           style={styles.image}
           resizeMode="contain"
         />

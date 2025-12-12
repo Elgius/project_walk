@@ -1,7 +1,11 @@
-import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
-import PrimaryButton from "@/components/PrimaryButton";
 import colors from "@/app/Theme/colors";
+import PrimaryButton from "@/components/PrimaryButton";
+import React from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
+
+// const footsteps=require("../assets/images/footsteps.png");
+const locationimg=require("../assets/images/location.png");
+const footsteps2="@/../assets/images/footsteps.png";
 
 export default function PermissionsScreen({ navigation }: any) {
   return (
@@ -9,7 +13,7 @@ export default function PermissionsScreen({ navigation }: any) {
 
       {/* Top Icon */}
       <Image
-        source={require("../assets/location.png")}
+        source={locationimg}
         style={styles.icon}
         resizeMode="contain"
       />
@@ -23,7 +27,7 @@ export default function PermissionsScreen({ navigation }: any) {
 
       {/* Footsteps Bottom Decoration */}
       <Image
-        source={require("../assets/feet.png")}
+        source={footsteps2}
         style={styles.footsteps}
         resizeMode="contain"
       />
