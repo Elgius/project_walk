@@ -210,6 +210,8 @@ const styles = StyleSheet.create({
   },
   progressCardImage: {
     borderRadius: 20,
+    width: '100%',
+    height: '100%',
   },
   progressCardOverlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
