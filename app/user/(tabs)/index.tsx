@@ -122,7 +122,7 @@ export default function HomeScreen() {
         </View>
 
         {/* Leaderboard Banner */}
-        <Pressable style={styles.leaderboardsBanner} onPress={() => router.push("/user/(tabs)/Onboarding1")}>
+        <Pressable style={styles.leaderboardsBanner} onPress={() => router.push("/user/leaderboard")}>
           <View style={styles.rewardsContent}>
             <View style={styles.rewardsTextContainer}>
               <View style={styles.rewardsTitleRow}>
@@ -351,15 +351,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   marketplaceImage: {
-    width: 500,
-    height: 200,
-    transform: [{ translateY: 20 }],
+    width: 400,
+    height: 180,
+    transform: [{ translateY: 20 }, { translateX: 15 }],
     opacity: 0.7
   },
   leaderboardImage: {
-    width: 220,
+    width: 180,
     height: 200,
-    transform: [{ translateY: 20 }, { translateX: -20 }],
+    transform: [{ translateY: 20 }, { translateX: 5 }],
     opacity: 0.7
   },
 });
