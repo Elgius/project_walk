@@ -26,10 +26,10 @@ export default function RewardsScreen() {
   const colors = Colors[colorScheme];
   const [activeTab, setActiveTab] = useState<'available' | 'redeemed'>('available');
 
-  const userPoints = 1250;
+  const [userPoints, setUserPoints] = useState(1250);
 
   // Mock rewards data
-  const availableRewards: Reward[] = [
+  const [availableRewards, setAvailableRewards] = useState<Reward[]>([
     { id: '1', title: '$5 Coffee Voucher', description: 'Valid at partner cafes', points: 500, icon: '☕' },
     { id: '2', title: '10% Store Discount', description: 'Any item at SportMart', points: 300, icon: '🛍️' },
     { id: '3', title: 'Free Smoothie', description: 'At Juice Bar locations', points: 400, icon: '🥤' },
@@ -38,12 +38,25 @@ export default function RewardsScreen() {
     { id: '6', title: 'Plant a Tree', description: 'We plant a tree in your name', points: 200, icon: '🌳' },
     { id: '7', title: 'Premium Week', description: '7 days of premium features', points: 600, icon: '⭐' },
     { id: '8', title: '$25 Running Shoes', description: 'Discount at ShoeWorld', points: 2000, icon: '👟' },
-  ];
+  ]);
 
-  const redeemedRewards: RedeemedReward[] = [
+  const [redeemedRewards, setRedeemedRewards] = useState<RedeemedReward[]>([
     { id: '1', title: 'Free Smoothie', redeemedAt: 'Dec 8, 2024', code: 'WALK-SMT-4829' },
     { id: '2', title: 'Plant a Tree', redeemedAt: 'Dec 1, 2024', code: 'TREE-PLT-1023' },
-  ];
+  ]);
+
+  const generateRedeemCode = (): string => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const segments = [4, 3, 4];
+    return segments
+      .map((len) => Array.from({ length: len }, () => chars[Math.floor(Math.random() * chars.length)]).join(''))
+      .join('-');
+  };
+
+  const formatDate = (date: Date): string => {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+  };
 
   const handleRedeem = (reward: Reward) => {
     if (userPoints < reward.points) {
@@ -51,7 +64,25 @@ export default function RewardsScreen() {
     } else {
       Alert.alert('Redeem Reward', `Redeem ${reward.title} for ${reward.points} points?`, [
         { text: 'Cancel', style: 'cancel' },
-        { text: 'Redeem', onPress: () => console.log('Redeemed:', reward.title) },
+        {
+          text: 'Redeem',
+          onPress: () => {
+            // Remove from available rewards
+            setAvailableRewards((prev) => prev.filter((r) => r.id !== reward.id));
+
+            // Add to redeemed rewards
+            const newRedeemed: RedeemedReward = {
+              id: `redeemed-${Date.now()}`,
+              title: reward.title,
+              redeemedAt: formatDate(new Date()),
+              code: generateRedeemCode(),
+            };
+            setRedeemedRewards((prev) => [newRedeemed, ...prev]);
+
+            // Deduct points
+            setUserPoints((prev) => prev - reward.points);
+          },
+        },
       ]);
     }
   };
