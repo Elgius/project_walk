@@ -1,5 +1,7 @@
 import { StyleSheet, View, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useRouter } from 'expo-router';
 
 import { ThemedText } from '@/components/themed-text';
 import { Colors } from '@/constants/theme';
@@ -8,6 +10,7 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 export default function ProfileScreen() {
   const colorScheme = useColorScheme() ?? 'dark';
   const colors = Colors[colorScheme];
+  const router = useRouter();
 
   // Mock user data
   const user = {
@@ -45,6 +48,30 @@ export default function ProfileScreen() {
             Member since {user.joinDate}
           </ThemedText>
         </View>
+
+        {/* Achievement Banner */}
+        <Pressable
+          style={({ pressed }) => [
+            styles.achievementBanner,
+            pressed && styles.achievementPressed,
+          ]}
+          onPress={() => router.push('/user/achievements')}
+        >
+          <View style={styles.achievementContent}>
+            <View style={styles.achievementTextContainer}>
+              <View style={styles.achievementTitleRow}>
+                <ThemedText style={styles.achievementTitle}>Achievements</ThemedText>
+                <MaterialIcons name="arrow-forward" size={20} color="#fff" style={styles.achievementArrow} />
+              </View>
+              <ThemedText style={styles.achievementSubtitle}>
+                5 / 10 unlocked
+              </ThemedText>
+            </View>
+            <View style={styles.achievementIconContainer}>
+              <MaterialIcons name="emoji-events" size={60} color="rgba(255, 255, 255, 0.7)" />
+            </View>
+          </View>
+        </Pressable>
 
         {/* Stats Grid */}
         <View style={styles.statsGrid}>
@@ -140,6 +167,54 @@ const styles = StyleSheet.create({
   joinDate: {
     marginTop: 8,
     fontSize: 12,
+  },
+  achievementBanner: {
+    backgroundColor: '#F5A962',
+    borderRadius: 20,
+    overflow: 'hidden',
+    marginTop: 10,
+    marginBottom: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 8,
+  },
+  achievementPressed: {
+    opacity: 0.8,
+  },
+  achievementContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 20,
+  },
+  achievementTextContainer: {
+    flex: 1,
+  },
+  achievementTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  achievementTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  achievementArrow: {
+    marginLeft: 8,
+  },
+  achievementSubtitle: {
+    fontSize: 13,
+    color: '#fff',
+    opacity: 0.8,
+    marginTop: 4,
+  },
+  achievementIconContainer: {
+    width: 80,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   statsGrid: {
     flexDirection: 'row',
