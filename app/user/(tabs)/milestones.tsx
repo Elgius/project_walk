@@ -23,6 +23,7 @@ type Milestone = {
   currentSteps: number;
   points: number;
   status: MilestoneStatus;
+  dateCreated: Date;
   dateAchieved?: Date;
 };
 
@@ -33,6 +34,7 @@ const initialMilestones: Milestone[] = [
     currentSteps: 20000,
     points: 100,
     status: "completed",
+    dateCreated: new Date("2025-12-01"),
     dateAchieved: new Date("2025-12-10"),
   },
   {
@@ -41,8 +43,8 @@ const initialMilestones: Milestone[] = [
     currentSteps: 6000,
     points: 50,
     status: "in_progress",
+    dateCreated: new Date("2025-12-08"),
   },
-  // { id: '3', targetSteps: 5000, currentSteps: 0, points: 25, status: 'locked' },
 ];
 
 export default function MilestonesScreen() {
@@ -56,6 +58,7 @@ export default function MilestonesScreen() {
   const [newTargetSteps, setNewTargetSteps] = useState(5000);
   const [milestonesList, setMilestonesList] =
     useState<Milestone[]>(initialMilestones);
+  const [selectedMilestone, setSelectedMilestone] = useState<Milestone | null>(null);
 
   // Handle adding a new milestone
   const handleAddMilestone = () => {
@@ -70,6 +73,7 @@ export default function MilestonesScreen() {
       currentSteps: 0,
       points: randomPoints,
       status: "in_progress",
+      dateCreated: new Date(),
     };
 
     setMilestonesList((prev) => [...prev, newMilestone]);
@@ -221,8 +225,9 @@ export default function MilestonesScreen() {
                 : colors.muted;
 
           return (
-            <View
+            <Pressable
               key={milestone.id}
+              onPress={() => setSelectedMilestone(milestone)}
               style={[styles.card, { backgroundColor: colors.card, opacity }]}
             >
               <View style={styles.cardContent}>
@@ -305,7 +310,7 @@ export default function MilestonesScreen() {
                   ]}
                 />
               </View>
-            </View>
+            </Pressable>
           );
         })}
       </ScrollView>
@@ -379,6 +384,150 @@ export default function MilestonesScreen() {
                 </ThemedText>
               </Pressable>
             </View>
+          </Pressable>
+        </Pressable>
+      </Modal>
+
+      {/* Milestone Detail Modal */}
+      <Modal
+        visible={selectedMilestone !== null}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setSelectedMilestone(null)}
+      >
+        <Pressable
+          style={styles.overlay}
+          onPress={() => setSelectedMilestone(null)}
+        >
+          <Pressable
+            style={[styles.modalCard, { backgroundColor: colors.card }]}
+          >
+            {selectedMilestone && (
+              <>
+                <View style={styles.detailHeader}>
+                  <View
+                    style={[
+                      styles.detailIconContainer,
+                      {
+                        backgroundColor:
+                          selectedMilestone.status === "completed"
+                            ? "rgba(76, 175, 80, 0.15)"
+                            : selectedMilestone.status === "in_progress"
+                              ? "rgba(245, 169, 98, 0.15)"
+                              : "rgba(142, 142, 147, 0.15)",
+                      },
+                    ]}
+                  >
+                    <MaterialIcons
+                      name={getIconForStatus(selectedMilestone.status).name}
+                      size={32}
+                      color={getIconForStatus(selectedMilestone.status).color}
+                    />
+                  </View>
+                  <ThemedText style={[styles.detailStatus, { color: colors.primary }]}>
+                    {selectedMilestone.status === "completed"
+                      ? "Completed"
+                      : selectedMilestone.status === "in_progress"
+                        ? "In Progress"
+                        : "Locked"}
+                  </ThemedText>
+                </View>
+
+                <View style={styles.detailRow}>
+                  <ThemedText style={[styles.detailLabel, { color: colors.muted }]}>
+                    Target Steps
+                  </ThemedText>
+                  <ThemedText style={[styles.detailValue, { color: colors.text }]}>
+                    {selectedMilestone.targetSteps.toLocaleString()}
+                  </ThemedText>
+                </View>
+
+                <View style={styles.detailRow}>
+                  <ThemedText style={[styles.detailLabel, { color: colors.muted }]}>
+                    Current Steps
+                  </ThemedText>
+                  <ThemedText style={[styles.detailValue, { color: colors.text }]}>
+                    {selectedMilestone.currentSteps.toLocaleString()}
+                  </ThemedText>
+                </View>
+
+                <View style={styles.detailRow}>
+                  <ThemedText style={[styles.detailLabel, { color: colors.muted }]}>
+                    Points Reward
+                  </ThemedText>
+                  <ThemedText style={[styles.detailValue, { color: colors.primary }]}>
+                    {selectedMilestone.points} pts
+                  </ThemedText>
+                </View>
+
+                <View style={styles.detailRow}>
+                  <ThemedText style={[styles.detailLabel, { color: colors.muted }]}>
+                    Progress
+                  </ThemedText>
+                  <ThemedText style={[styles.detailValue, { color: colors.text }]}>
+                    {Math.round(
+                      (selectedMilestone.currentSteps / selectedMilestone.targetSteps) * 100
+                    )}%
+                  </ThemedText>
+                </View>
+
+                <View style={styles.detailRow}>
+                  <ThemedText style={[styles.detailLabel, { color: colors.muted }]}>
+                    Created On
+                  </ThemedText>
+                  <ThemedText style={[styles.detailValue, { color: colors.text }]}>
+                    {selectedMilestone.dateCreated.toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                  </ThemedText>
+                </View>
+
+                {selectedMilestone.status === "completed" &&
+                  selectedMilestone.dateAchieved && (
+                    <View style={styles.detailRow}>
+                      <ThemedText style={[styles.detailLabel, { color: colors.muted }]}>
+                        Achieved On
+                      </ThemedText>
+                      <ThemedText style={[styles.detailValue, { color: colors.success }]}>
+                        {selectedMilestone.dateAchieved.toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </ThemedText>
+                    </View>
+                  )}
+
+                <View style={[styles.detailProgressBar, { backgroundColor: colors.border }]}>
+                  <View
+                    style={[
+                      styles.detailProgressFill,
+                      {
+                        width: `${Math.min(
+                          (selectedMilestone.currentSteps / selectedMilestone.targetSteps) * 100,
+                          100
+                        )}%`,
+                        backgroundColor:
+                          selectedMilestone.status === "completed"
+                            ? colors.success
+                            : colors.primary,
+                      },
+                    ]}
+                  />
+                </View>
+
+                <Pressable
+                  style={[styles.detailCloseButton, { backgroundColor: colors.primary }]}
+                  onPress={() => setSelectedMilestone(null)}
+                >
+                  <ThemedText style={{ color: "#fff", fontWeight: "600" }}>
+                    Close
+                  </ThemedText>
+                </Pressable>
+              </>
+            )}
           </Pressable>
         </Pressable>
       </Modal>
@@ -536,6 +685,53 @@ const styles = StyleSheet.create({
   },
   modalButton: {
     flex: 1,
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+  detailHeader: {
+    alignItems: "center",
+    marginBottom: 24,
+  },
+  detailIconContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  detailStatus: {
+    fontSize: 18,
+    fontWeight: "600",
+  },
+  detailRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "rgba(255, 255, 255, 0.1)",
+  },
+  detailLabel: {
+    fontSize: 14,
+  },
+  detailValue: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  detailProgressBar: {
+    height: 8,
+    borderRadius: 4,
+    marginTop: 20,
+    marginBottom: 20,
+    overflow: "hidden",
+  },
+  detailProgressFill: {
+    height: "100%",
+    borderRadius: 4,
+  },
+  detailCloseButton: {
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: "center",
