@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing } from "react-native-reanimated";
+import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing, interpolate } from "react-native-reanimated";
 import {
   Home,
   Gift,
@@ -15,13 +15,51 @@ import colors from "@/app/Theme/colors";
 interface BottomNavProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
+  isVisible?: boolean;
 }
 
-export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
+const NAV_HEIGHT = 70;
+const NAV_MARGIN_BOTTOM = 20;
+
+export default function BottomNav({ activeTab, onTabChange, isVisible = true }: BottomNavProps) {
   const insets = useSafeAreaInsets();
 
+  // Calculate total height for translation when hiding
+  const totalHeight = NAV_HEIGHT + NAV_MARGIN_BOTTOM + insets.bottom + 10;
+
+  // Shared value for visibility animation (1 = visible, 0 = hidden)
+  const visibilityProgress = useSharedValue(isVisible ? 1 : 0);
+
+  // Animate when isVisible changes
+  useEffect(() => {
+    visibilityProgress.value = withTiming(isVisible ? 1 : 0, {
+      duration: 300,
+      easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+    });
+  }, [isVisible]);
+
+  // Animated style for the container
+  const containerAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateY: interpolate(
+            visibilityProgress.value,
+            [0, 1],
+            [totalHeight, 0]
+          ),
+        },
+      ],
+      opacity: interpolate(
+        visibilityProgress.value,
+        [0, 0.5, 1],
+        [0, 0.8, 1]
+      ),
+    };
+  });
+
   return (
-    <View style={[styles.outerContainer, { paddingBottom: insets.bottom }]}>
+    <Animated.View style={[styles.outerContainer, { paddingBottom: insets.bottom }, containerAnimatedStyle]}>
       <View style={styles.pillContainer}>
         <NavItem
           active={activeTab === "home"}
@@ -53,7 +91,7 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
           Icon={User}
         />
       </View>
-    </View>
+    </Animated.View>
   );
 }
 

@@ -1,11 +1,14 @@
 import { Tabs, usePathname, useRouter } from 'expo-router';
 import React from 'react';
+import { View } from 'react-native';
 
 import BottomNav from '@/components/BottomNavBar';
+import { NavVisibilityProvider, useNavVisibility } from '@/contexts/NavVisibilityContext';
 
-export default function TabLayout() {
+function TabLayoutContent() {
   const router = useRouter();
   const pathname = usePathname();
+  const { isVisible, resetInactivityTimer } = useNavVisibility();
 
   // Map pathname to tab name
   const getActiveTab = () => {
@@ -18,6 +21,7 @@ export default function TabLayout() {
   };
 
   const handleTabChange = (tab: string) => {
+    resetInactivityTimer();
     const routes: Record<string, string> = {
       home: '/user',
       milestones: '/user/milestones',
@@ -29,19 +33,37 @@ export default function TabLayout() {
   };
 
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-      }}
-      tabBar={() => (
-        <BottomNav activeTab={getActiveTab()} onTabChange={handleTabChange} />
-      )}
+    <View
+      style={{ flex: 1 }}
+      onTouchStart={resetInactivityTimer}
+      onTouchMove={resetInactivityTimer}
     >
-      <Tabs.Screen name="index" />
-      <Tabs.Screen name="milestones" />
-      <Tabs.Screen name="analytics" />
-      <Tabs.Screen name="rewards" />
-      <Tabs.Screen name="profile" />
-    </Tabs>
+      <Tabs
+        screenOptions={{
+          headerShown: false,
+        }}
+        tabBar={() => (
+          <BottomNav
+            activeTab={getActiveTab()}
+            onTabChange={handleTabChange}
+            isVisible={isVisible}
+          />
+        )}
+      >
+        <Tabs.Screen name="index" />
+        <Tabs.Screen name="milestones" />
+        <Tabs.Screen name="analytics" />
+        <Tabs.Screen name="rewards" />
+        <Tabs.Screen name="profile" />
+      </Tabs>
+    </View>
+  );
+}
+
+export default function TabLayout() {
+  return (
+    <NavVisibilityProvider inactivityTimeout={3000}>
+      <TabLayoutContent />
+    </NavVisibilityProvider>
   );
 }
